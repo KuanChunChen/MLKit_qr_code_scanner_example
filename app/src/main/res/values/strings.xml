@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">MLKitQrCodeScannerExample</string>
+    <string name="common_scan_pc_code">Please scan the QR Code shown on the AirDroid Cast recipient client</string>
+    <string name="common_tips">Zoom in or out with two fingers</string>
+    <string name="device_qr_code_invalid">Invalid QR code</string>
+    <string name="dialog_positive_content">Invalid QR code</string>
+</resources>
