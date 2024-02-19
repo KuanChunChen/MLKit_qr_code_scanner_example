@@ -6,7 +6,6 @@ import android.media.MediaPlayer
 import android.os.Vibrator
 import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.CameraSelector
 import androidx.camera.view.PreviewView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModel
@@ -29,7 +28,7 @@ import java.io.IOException
  * @version 1.0.0
  * @since 2020~2024
  */
-class MainViewModel(val context: Context,private val scannerManager: ScannerManager) : ViewModel(), KoinComponent {
+class MainViewModel(private val scannerManager: ScannerManager) : ViewModel(), KoinComponent {
 
     companion object {
         private const val ZOOM_TIP_TIMEOUT_IN_MS = 3_000L
@@ -45,14 +44,26 @@ class MainViewModel(val context: Context,private val scannerManager: ScannerMana
         onResult: (state: ScannerViewState, result: String) -> Unit,
     ) {
         scannerManager.init(viewLifecycleOwner, previewView, onResult)
-        scannerManager.startCamera()
+        startCamera()
     }
 
     fun setOnScreenScaleTouchEvent(event: MotionEvent): Boolean {
         return scannerManager.scaleGestureDetector.onTouchEvent(event)
     }
 
-    fun initBeepSound() {
+    fun setOnTapToFocus(event: MotionEvent) {
+        scannerManager.onTapToFocus(event)
+    }
+
+    fun stopCamera() {
+        scannerManager.stopCamera()
+    }
+
+    fun startCamera() {
+        scannerManager.startCamera()
+    }
+
+    fun initBeepSound(context: Context) {
         val playBeep = shouldPlayBeep(context)
         if (playBeep && mediaPlayer == null) {
             mediaPlayer = MediaPlayer().apply {

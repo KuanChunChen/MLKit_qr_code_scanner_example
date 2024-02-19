@@ -1,8 +1,6 @@
 package elegant.access.mlkit.qrcode.scanner.example.di
 
-import elegant.access.mlkit.qrcode.scanner.example.base.mlkit.ScannerManager
 import elegant.access.mlkit.qrcode.scanner.example.ui.main.MainViewModel
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -20,10 +18,6 @@ import org.koin.dsl.module
  * @since 2020~2024
  */
 
-val appModule = module {
-    single { androidContext() }
-}
-
 val viewModelModule = module {
-    viewModel { MainViewModel(get(),get()) }
+    viewModel { MainViewModel(get()) }
 }

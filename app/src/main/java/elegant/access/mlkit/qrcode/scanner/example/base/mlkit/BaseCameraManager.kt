@@ -3,11 +3,14 @@ package elegant.access.mlkit.qrcode.scanner.example.base.mlkit
 import android.content.ContentValues
 import android.content.Context
 import android.util.Log
+import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.FocusMeteringAction
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
+import androidx.camera.core.SurfaceOrientedMeteringPointFactory
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
@@ -149,5 +152,12 @@ abstract class BaseCameraManager(private val context: Context, private var lensF
             return true
         }
     })
+
+    fun onTapToFocus(event: MotionEvent) {
+        val factory = SurfaceOrientedMeteringPointFactory(viewPreview.width.toFloat(), viewPreview.height.toFloat())
+        val point = factory.createPoint(event.x, event.y)
+        val action = FocusMeteringAction.Builder(point, FocusMeteringAction.FLAG_AF).build()
+        camera?.cameraControl?.startFocusAndMetering(action)
+    }
 
 }

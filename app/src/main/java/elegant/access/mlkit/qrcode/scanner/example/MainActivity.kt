@@ -1,9 +1,12 @@
 package elegant.access.mlkit.qrcode.scanner.example
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import elegant.access.mlkit.qrcode.scanner.example.base.mlkit.ScannerViewState
 import elegant.access.mlkit.qrcode.scanner.example.base.utils.checkAndRequestPermission
@@ -13,6 +16,9 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
+    companion object {
+        private const val TAG = "MainActivity"
+    }
 
     private var _vb: ActivityMainBinding? = null
     private val vb get() = _vb!!
@@ -24,39 +30,54 @@ class MainActivity : AppCompatActivity() {
         setContentView(vb.root)
         checkAndRequestPermission(Manifest.permission.CAMERA,
             onPermissionGranted = {
+                Log.d(TAG, "onPermissionGranted")
                 viewModel.initCamera(this, vb.previewView, ::onResult)
-                viewModel.initBeepSound()
+                viewModel.initBeepSound(this)
                 initZoomListener()
             }, onPermissionDenied = {
+                Log.d(TAG, "onPermissionDenied")
 
             })
     }
 
     override fun onResume() {
         super.onResume()
-
-
+        Log.d(TAG, "onResume")
     }
 
     private fun onResult(state: ScannerViewState, result: String?) {
-        when(state)
-        {
+        viewModel.stopCamera()
+        when (state) {
             ScannerViewState.Success -> {
                 viewModel.playBeepSoundAndVibrate(this)
-//                viewModel.parserScanCode(result)
+                Log.d(TAG, "Success : $result")
+                showDialog("$result")
             }
+
             ScannerViewState.Error -> {
-//                invalidScanCodeDialog.show()
+                showDialog(getString(R.string.device_qr_code_invalid))
             }
         }
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun initZoomListener() {
 
         vb.captureContainer.setOnTouchListener { _: View?, event: MotionEvent? ->
             event?.let {
+                viewModel.setOnTapToFocus(it)
                 viewModel.setOnScreenScaleTouchEvent(it)
-            }?: true
+            } ?: true
         }
+    }
+
+    private fun showDialog(title: String) {
+        AlertDialog.Builder(this)
+            .setTitle(title)
+            .setMessage(title)
+            .setPositiveButton(getString(R.string.dialog_positive_content)) { _, _ ->
+                viewModel.startCamera()
+            }
+            .show()
     }
 }
