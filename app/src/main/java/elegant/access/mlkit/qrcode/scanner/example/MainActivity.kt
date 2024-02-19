@@ -65,7 +65,12 @@ class MainActivity : AppCompatActivity() {
 
         vb.captureContainer.setOnTouchListener { _: View?, event: MotionEvent? ->
             event?.let {
-                viewModel.setOnTapToFocus(it)
+                when (it.actionMasked) {
+                    MotionEvent.ACTION_DOWN -> {
+                        // Only trigger focus on down events.
+                        viewModel.setOnTapToFocus(it)
+                    }
+                }
                 viewModel.setOnScreenScaleTouchEvent(it)
             } ?: true
         }
