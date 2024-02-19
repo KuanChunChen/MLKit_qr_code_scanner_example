@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">QR 圖碼掃描器</string>
+    <string name="common_scan_pc_code">請掃描收件者用戶端顯示的二維碼</string>
+    <string name="common_tips">用兩根手指放大或縮小</string>
+    <string name="device_qr_code_invalid">二維碼無效</string>
+    <string name="dialog_positive_content">好的</string>
+</resources>

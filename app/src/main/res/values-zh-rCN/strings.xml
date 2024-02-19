@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">二维码扫描器</string>
+    <string name="common_scan_pc_code">请扫描收件人客户端显示的二维码</string>
+    <string name="common_tips">用两根手指放大或缩小</string>
+    <string name="device_qr_code_invalid">二维码无效</string>
+    <string name="dialog_positive_content">好的</string>
+</resources>

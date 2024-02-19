@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">QrCode스캐너</string>
+    <string name="common_scan_pc_code">수신자 클라이언트에 표시된 QR 코드를 스캔하세요.</string>
+    <string name="common_tips">두 손가락으로 확대 또는 축소</string>
+    <string name="device_qr_code_invalid">잘못된 QR 코드</string>
+    <string name="dialog_positive_content">좋아요</string>
+</resources>

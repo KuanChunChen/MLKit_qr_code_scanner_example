@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Qrコードスキャナー</string>
+    <string name="common_scan_pc_code">受信者のクライアントに表示されている QR コードをスキャンしてください</string>
+    <string name="common_tips">2 本の指で拡大または縮小します</string>
+    <string name="device_qr_code_invalid">無効な QR コード</string>
+    <string name="dialog_positive_content">わかりました</string>
+</resources>
