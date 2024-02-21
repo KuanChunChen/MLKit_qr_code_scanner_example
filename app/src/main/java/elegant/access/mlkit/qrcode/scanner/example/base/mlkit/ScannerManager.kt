@@ -1,6 +1,10 @@
 package elegant.access.mlkit.qrcode.scanner.example.base.mlkit
 
 import android.content.Context
+import android.graphics.Point
+import android.util.DisplayMetrics
+import android.util.Log
+import android.view.WindowManager
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.CameraSelector.LensFacing
 import androidx.camera.core.ImageAnalysis
@@ -29,10 +33,27 @@ sealed class ScannerViewState {
     object Error : ScannerViewState()
 }
 
-class ScannerManager(context: Context, lensFacing: Int) : BaseCameraManager(context, lensFacing) {
+class ScannerManager(private val context: Context, lensFacing: Int) : BaseCameraManager(context, lensFacing) {
 
+    private fun getCameraDisplayOrientation(): Point {
+        val manager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display = manager.defaultDisplay
+        val metrics = DisplayMetrics().also { display.getRealMetrics(it) }
+        val screenResolution = Point(metrics.widthPixels, metrics.heightPixels)
+        val screenResolutionForCamera = Point()
+
+        screenResolutionForCamera.x = screenResolution.x
+        screenResolutionForCamera.y = screenResolution.y
+        if (screenResolution.x < screenResolution.y) {
+            screenResolutionForCamera.x = screenResolution.y
+            screenResolutionForCamera.y = screenResolution.x
+        }
+        return screenResolutionForCamera
+    }
 
     private fun getImageAnalysis(): ImageAnalysis {
+        val screenResolutionForCamera = getCameraDisplayOrientation()
+        Log.d("Debug","getImageAnalysis, width = ${screenResolutionForCamera.x} , height : ${screenResolutionForCamera.y}")
         return ImageAnalysis.Builder()
             .build()
             .also {
