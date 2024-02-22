@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Point
 import android.util.DisplayMetrics
 import android.util.Log
+import android.util.Size
 import android.view.WindowManager
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.CameraSelector.LensFacing
@@ -55,6 +56,7 @@ class ScannerManager(private val context: Context, lensFacing: Int) : BaseCamera
         val screenResolutionForCamera = getCameraDisplayOrientation()
         Log.d("Debug","getImageAnalysis, width = ${screenResolutionForCamera.x} , height : ${screenResolutionForCamera.y}")
         return ImageAnalysis.Builder()
+            .setTargetResolution(Size(screenResolutionForCamera.x, screenResolutionForCamera.y))
             .build()
             .also {
                 it.setAnalyzer(cameraExecutor, ScannerAnalyzer(onResult))
