@@ -1,88 +1,78 @@
 package elegant.access.mlkit.qrcode.scanner.example
 
-import android.Manifest
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Log
-import android.view.MotionEvent
-import android.view.View
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
-import elegant.access.mlkit.qrcode.scanner.example.base.mlkit.ScannerViewState
-import elegant.access.mlkit.qrcode.scanner.example.base.utils.checkAndRequestPermission
-import elegant.access.mlkit.qrcode.scanner.example.databinding.ActivityMainBinding
-import elegant.access.mlkit.qrcode.scanner.example.ui.main.MainViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
+import elegant.access.mlkit.qrcode.scanner.example.constants.BarCodeConstant
+import elegant.access.mlkit.qrcode.scanner.example.ui.barcode.ElegantAccessBarCodeActivity
+import kotlinx.coroutines.launch
 
-class MainActivity : AppCompatActivity() {
+/**
+ * This file is part of an Android project developed by elegant.access.
+ *
+ * For more information about this project, you can visit our website:
+ * {@link https://elegantaccess.org}
+ *
+ * Please note that this project is for educational purposes only and is not intended
+ * for use in production environments.
+ *
+ * @author Willy.Chen
+ * @version 1.0.0
+ * @since 2020~2024
+ */
+
+class MainActivity : ElegantAccessBarCodeActivity() {
 
     companion object {
         private const val TAG = "MainActivity"
     }
 
-    private var _vb: ActivityMainBinding? = null
-    private val vb get() = _vb!!
-    private val viewModel by viewModel<MainViewModel>()
+    /**If there are some key to decode qrcode,you can set it here
+     * Or you can get to ScanCodeParser to refactor your decode logic**/
+    override val qrCodeKey: String
+        get() = ""
+
+    override val onScanResult: (shareCode: String) -> Unit
+        get() = { qrcode ->
+            Log.d(TAG,"qr code : $qrcode")
+            showDialog("Success!Qr Code: $qrcode")
+        }
+
+    override val onScanFailed: (errorCode: Int) -> Unit
+        get() = { errorCode ->
+            Log.d(TAG,"error code : $errorCode")
+            when (errorCode) {
+                BarCodeConstant.SCAN_ERROR_ANALYZE_FAILED,
+                BarCodeConstant.SCAN_ERROR_NOT_QR_CODE_FORMAT -> {
+                    showDialog("Error code: $errorCode")
+                }
+            }
+        }
+
+    override fun onStart() {
+        super.onStart()
+        lifecycleScope.launch {
+            elegantAccessCodeViewModel.showCaptureZoomTip()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _vb = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(vb.root)
-        checkAndRequestPermission(Manifest.permission.CAMERA,
-            onPermissionGranted = {
-                Log.d(TAG, "onPermissionGranted")
-                viewModel.initCamera(this, vb.previewView, ::onResult)
-                viewModel.initBeepSound(this)
-                initZoomListener()
-            }, onPermissionDenied = {
-                Log.d(TAG, "onPermissionDenied")
-
-            })
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d(TAG, "onResume")
-    }
-
-    private fun onResult(state: ScannerViewState, result: String?) {
-        viewModel.stopCamera()
-        when (state) {
-            ScannerViewState.Success -> {
-                viewModel.playBeepSoundAndVibrate(this)
-                Log.d(TAG, "Success : $result")
-                showDialog("$result")
+        Log.d(TAG,"onCreate")
+        applyStyles {
+            zoomTipTextStyle {
+                text = getString(R.string.zoom_tips)
             }
-
-            ScannerViewState.Error -> {
-                showDialog(getString(R.string.device_qr_code_invalid))
+            captureHintTextStyle {
+                text = getString(R.string.common_scan_pc_code)
+            }
+            toolbarStyle {
+                val color = ContextCompat.getColor(this@MainActivity, android.R.color.darker_gray)
+                title = getString(R.string.app_name)
+                setTitleTextColor(color)
             }
         }
     }
 
-    @SuppressLint("ClickableViewAccessibility")
-    private fun initZoomListener() {
-
-        vb.captureContainer.setOnTouchListener { _: View?, event: MotionEvent? ->
-            event?.let {
-                when (it.actionMasked) {
-                    MotionEvent.ACTION_DOWN -> {
-                        // Only trigger focus on down events.
-                        viewModel.setOnTapToFocus(it)
-                    }
-                }
-                viewModel.setOnScreenScaleTouchEvent(it)
-            } ?: true
-        }
-    }
-
-    private fun showDialog(title: String) {
-        AlertDialog.Builder(this)
-            .setTitle(title)
-            .setMessage(title)
-            .setPositiveButton(getString(R.string.dialog_positive_content)) { _, _ ->
-                viewModel.startCamera()
-            }
-            .show()
-    }
 }

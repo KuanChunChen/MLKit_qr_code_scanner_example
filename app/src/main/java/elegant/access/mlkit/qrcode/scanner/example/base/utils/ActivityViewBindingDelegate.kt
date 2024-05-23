@@ -1,8 +1,8 @@
-package elegant.access.mlkit.qrcode.scanner.example.di
+package elegant.access.mlkit.qrcode.scanner.example.base.utils
 
-import androidx.camera.core.CameraSelector
-import elegant.access.mlkit.qrcode.scanner.example.base.mlkit.ScannerManager
-import org.koin.dsl.module
+import android.view.LayoutInflater
+import androidx.appcompat.app.AppCompatActivity
+import androidx.viewbinding.ViewBinding
 
 /**
  * This file is part of an Android project developed by elegant.access.
@@ -17,8 +17,8 @@ import org.koin.dsl.module
  * @version 1.0.0
  * @since 2020~2024
  */
-val scannerModule = module {
-    single {
-        ScannerManager(get(), CameraSelector.LENS_FACING_BACK)
-    }
+inline fun <T : ViewBinding> AppCompatActivity.viewBinding(
+    crossinline bindingInflater: (LayoutInflater) -> T
+) = lazy(LazyThreadSafetyMode.NONE) {
+    bindingInflater.invoke(layoutInflater)
 }

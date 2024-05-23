@@ -1,7 +1,6 @@
 package elegant.access.mlkit.qrcode.scanner.example
 
 import android.app.Application
-import elegant.access.mlkit.qrcode.scanner.example.di.scannerModule
 import elegant.access.mlkit.qrcode.scanner.example.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -24,7 +23,6 @@ import org.koin.core.context.GlobalContext.startKoin
 class MLApplication : Application() {
 
     private fun defineDependencies() = listOf(
-        scannerModule,
         viewModelModule,
     )
 

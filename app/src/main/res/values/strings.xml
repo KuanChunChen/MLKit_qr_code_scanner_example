@@ -4,4 +4,5 @@
     <string name="common_tips">Zoom in or out with two fingers</string>
     <string name="device_qr_code_invalid">Invalid QR code</string>
     <string name="dialog_positive_content">OK</string>
+    <string name="zoom_tips" translatable="false">Input your zoom tips here.</string>
 </resources>

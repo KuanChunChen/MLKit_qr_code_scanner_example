@@ -1,17 +1,17 @@
-package elegant.access.mlkit.qrcode.scanner.example.ui.main
+package elegant.access.mlkit.qrcode.scanner.example.ui.barcode
 
 import android.content.Context
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.Vibrator
-import android.view.MotionEvent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.view.PreviewView
-import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import elegant.access.mlkit.qrcode.scanner.example.R
-import elegant.access.mlkit.qrcode.scanner.example.base.mlkit.ScannerManager
-import elegant.access.mlkit.qrcode.scanner.example.base.mlkit.ScannerViewState
+import elegant.access.mlkit.qrcode.scanner.example.base.utils.ScanCodeParser
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 import org.koin.core.component.KoinComponent
 import java.io.IOException
 
@@ -28,7 +28,16 @@ import java.io.IOException
  * @version 1.0.0
  * @since 2020~2024
  */
-class MainViewModel(private val scannerManager: ScannerManager) : ViewModel(), KoinComponent {
+class ElegantAccessCodeViewModel : ViewModel(),KoinComponent {
+
+    private var mediaPlayer: MediaPlayer? = null
+
+    var commandLiveData: MutableLiveData<Command> = MutableLiveData()
+
+    sealed class Command {
+        data class ShowCaptureZoomTip(val isVisible: Boolean) : Command()
+        data class ScanQrResult(val isValid: Boolean, val shareCode: String) : Command()
+    }
 
     companion object {
         private const val ZOOM_TIP_TIMEOUT_IN_MS = 3_000L
@@ -36,32 +45,21 @@ class MainViewModel(private val scannerManager: ScannerManager) : ViewModel(), K
         private const val BEEP_VOLUME = 0.50f
     }
 
-    private var mediaPlayer: MediaPlayer? = null
-
-    fun initCamera(
-        viewLifecycleOwner: LifecycleOwner,
-        previewView: PreviewView,
-        onResult: (state: ScannerViewState, result: String) -> Unit,
-    ) {
-        scannerManager.init(viewLifecycleOwner, previewView, onResult)
-        startCamera()
+    suspend fun showCaptureZoomTip() {
+        withContext(Dispatchers.IO) {
+            commandLiveData.postValue(Command.ShowCaptureZoomTip(true))
+            delay(ZOOM_TIP_TIMEOUT_IN_MS)
+            commandLiveData.postValue(Command.ShowCaptureZoomTip(false))
+        }
     }
 
-    fun setOnScreenScaleTouchEvent(event: MotionEvent): Boolean {
-        return scannerManager.scaleGestureDetector.onTouchEvent(event)
+    fun parserScanCode(result: String?, qrCodeKey: String) {
+        val scanCodeParser = ScanCodeParser(result,qrCodeKey)
+        val isValid = qrCodeKey.isBlank() || scanCodeParser.isValid()
+        val shareCode = if (isValid&&qrCodeKey.isNotBlank()) scanCodeParser.getShareCode() else result ?: ""
+        commandLiveData.postValue(Command.ScanQrResult(isValid, shareCode))
     }
 
-    fun setOnTapToFocus(event: MotionEvent) {
-        scannerManager.onTapToFocus(event)
-    }
-
-    fun stopCamera() {
-        scannerManager.stopCamera()
-    }
-
-    fun startCamera() {
-        scannerManager.startCamera()
-    }
 
     fun initBeepSound(context: Context) {
         val playBeep = shouldPlayBeep(context)
@@ -94,4 +92,5 @@ class MainViewModel(private val scannerManager: ScannerManager) : ViewModel(), K
         val vibrator = context.getSystemService(AppCompatActivity.VIBRATOR_SERVICE) as Vibrator
         vibrator.vibrate(VIBRATE_DURATION)
     }
+
 }

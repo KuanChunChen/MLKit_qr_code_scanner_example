@@ -7,7 +7,6 @@ import android.util.Log
 import android.util.Size
 import android.view.WindowManager
 import androidx.camera.core.CameraSelector
-import androidx.camera.core.CameraSelector.LensFacing
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
@@ -28,13 +27,22 @@ import androidx.lifecycle.LifecycleOwner
  * @version 1.0.0
  * @since 2020~2024
  */
-
 sealed class ScannerViewState {
     object Success : ScannerViewState()
     object Error : ScannerViewState()
 }
 
-class ScannerManager(private val context: Context, lensFacing: Int) : BaseCameraManager(context, lensFacing) {
+class ScannerLifecycleObserver(
+    owner: LifecycleOwner,
+    private val context: Context,
+    viewPreview: PreviewView,
+    private val onResult: (state: ScannerViewState, result: String) -> Unit,
+    lensFacing: Int
+) : BaseCameraLifecycleObserver(owner, context, viewPreview, lensFacing, {}) {
+
+    companion object {
+        private const val TAG = "ScannerLifecycleObserver"
+    }
 
     private fun getCameraDisplayOrientation(): Point {
         val manager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -54,12 +62,12 @@ class ScannerManager(private val context: Context, lensFacing: Int) : BaseCamera
 
     private fun getImageAnalysis(): ImageAnalysis {
         val screenResolutionForCamera = getCameraDisplayOrientation()
-        Log.d("Debug","getImageAnalysis, width = ${screenResolutionForCamera.x} , height : ${screenResolutionForCamera.y}")
+        Log.d(TAG,"getImageAnalysis, width = ${screenResolutionForCamera.x} , height : ${screenResolutionForCamera.y}")
         return ImageAnalysis.Builder()
             .setTargetResolution(Size(screenResolutionForCamera.x, screenResolutionForCamera.y))
             .build()
-            .also {
-                it.setAnalyzer(cameraExecutor, ScannerAnalyzer(onResult))
+            .apply {
+                this.setAnalyzer(cameraExecutor, ScannerAnalyzer(onResult))
             }
     }
 

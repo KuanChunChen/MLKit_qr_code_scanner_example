@@ -1,67 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/capture_container"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/capture_container"
+    <androidx.camera.view.PreviewView
+        android:id="@+id/previewView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" />
 
-        <androidx.camera.view.PreviewView
-            android:id="@+id/previewView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+    <LinearLayout
+        android:id="@+id/zoom_tip_layout"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/capture_zoom_tip_bg"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/capture_hint_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:visibility="visible">
 
-        <LinearLayout
-            android:id="@+id/zoom_tip_layout"
-            android:layout_width="200dp"
+        <ImageView
+            android:id="@+id/ivZoomTip"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/capture_zoom_tip_bg"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:visibility="gone"
-            android:layout_marginBottom="20dp"
-            app:layout_constraintBottom_toTopOf="@+id/capture_hint_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:visibility="visible">
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
-                android:contentDescription="@string/common_tips"
-                app:srcCompat="@mipmap/pic_enlarge_qrcode" />
-
-            <TextView
-                android:layout_width="180dp"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="11dp"
-                android:gravity="center"
-                android:text="@string/common_tips"
-                android:textColor="@color/white_ffffff" />
-        </LinearLayout>
+            android:layout_marginTop="11dp"
+            app:srcCompat="@mipmap/pic_enlarge_qrcode" />
 
         <TextView
-            android:id="@+id/capture_hint_text"
-            android:layout_width="0dp"
+            android:id="@+id/tvZoomTip"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="11dp"
             android:gravity="center"
-            android:text="@string/common_scan_pc_code"
-            android:textColor="@color/white"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/previewView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/previewView"
-            app:layout_constraintVertical_bias="0.84"
-            app:layout_constraintWidth_max="500dp"
-            app:layout_constraintWidth_percent="0.888" />
+            android:textColor="@android:color/white" />
+    </LinearLayout>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <TextView
+        android:id="@+id/capture_hint_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/previewView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/previewView"
+        app:layout_constraintVertical_bias="0.84"
+        app:layout_constraintWidth_max="500dp"
+        app:layout_constraintWidth_percent="0.888" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

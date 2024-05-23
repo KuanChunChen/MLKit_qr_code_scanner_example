@@ -36,28 +36,24 @@ class ScannerAnalyzer(
         val options =
             BarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_QR_CODE).build()
         val scanner = BarcodeScanning.getClient(options)
-        val mediaImage = imageProxy.image
-        if (mediaImage != null) {
-            InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-                .let { image ->
-                    scanner.process(image)
-                        .addOnSuccessListener { barcodes ->
-                            for (barcode in barcodes) {
-                                onResult(ScannerViewState.Success, barcode.rawValue ?: "")
-                            }
+        val mediaImage = imageProxy.image ?: return onResult(ScannerViewState.Error, "Image is empty")
+        InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
+            .let { image ->
+                scanner.process(image)
+                    .addOnSuccessListener { barcodes ->
+                        for (barcode in barcodes) {
+                            onResult(ScannerViewState.Success, barcode.rawValue ?: "")
                         }
-                        .addOnFailureListener {
-                            onResult(ScannerViewState.Error, it.message.toString())
+                    }
+                    .addOnFailureListener {
+                        onResult(ScannerViewState.Error, it.message.toString())
+                    }
+                    .addOnCompleteListener {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            delay(delayForProcessingNextImage)
+                            imageProxy.close()
                         }
-                        .addOnCompleteListener {
-                            CoroutineScope(Dispatchers.IO).launch {
-                                delay(delayForProcessingNextImage)
-                                imageProxy.close()
-                            }
-                        }
-                }
-        } else {
-            onResult(ScannerViewState.Error, "Image is empty")
-        }
+                    }
+            }
     }
 }

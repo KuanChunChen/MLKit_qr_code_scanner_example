@@ -1,8 +1,4 @@
-package elegant.access.mlkit.qrcode.scanner.example.di
-
-import elegant.access.mlkit.qrcode.scanner.example.ui.barcode.ElegantAccessCodeViewModel
-import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.dsl.module
+package elegant.access.mlkit.qrcode.scanner.example.constants
 
 /**
  * This file is part of an Android project developed by elegant.access.
@@ -18,6 +14,9 @@ import org.koin.dsl.module
  * @since 2020~2024
  */
 
-val viewModelModule = module {
-    viewModel { ElegantAccessCodeViewModel() }
+object BarCodeConstant {
+
+    const val SCAN_ERROR_ANALYZE_FAILED = 1
+    const val SCAN_ERROR_NOT_QR_CODE_FORMAT = 2
+
 }
