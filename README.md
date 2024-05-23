@@ -123,45 +123,57 @@ Dependency Injection: Implements koin-android for dependency injection, promotin
 
 <details open><summary>app.src.main.java.elegant.access.mlkit.qrcode.scanner.example</summary>
 
-| File                                                                                                                                                                         | Summary                         |
-| ---                                                                                                                                                                          | ---                             |
-| [MainActivity.kt](https://github.com/KuanChunChen/MLKit_qr_code_scanner_example/blob/master/app/src/main/java/elegant/access/mlkit/qrcode/scanner/example/MainActivity.kt)   | <code>► Main page to use scanner.</code> |
-| [MLApplication.kt](https://github.com/KuanChunChen/MLKit_qr_code_scanner_example/blob/master/app/src/main/java/elegant/access/mlkit/qrcode/scanner/example/MLApplication.kt) | <code>► Main application to start some library here.</code> |
+| File                                                                                                                                                                             | Summary                         |
+| ---                                                                                                                                                                              | ---                             |
+| [Styles.kt](https://github.com/KuanChunChen/MLKit_qr_code_scanner_example.git/blob/master/app/src/main/java/elegant/access/mlkit/qrcode/scanner/example/Styles.kt)               | <code>►To make common activity can be setting when the acitivity is in the module.</code> |
+| [MainActivity.kt](https://github.com/KuanChunChen/MLKit_qr_code_scanner_example.git/blob/master/app/src/main/java/elegant/access/mlkit/qrcode/scanner/example/MainActivity.kt)   | <code>► Main activity.</code> |
+| [MLApplication.kt](https://github.com/KuanChunChen/MLKit_qr_code_scanner_example.git/blob/master/app/src/main/java/elegant/access/mlkit/qrcode/scanner/example/MLApplication.kt) | <code>► Main application.</code> |
 
 </details>
 
-<details open><summary>app.src.main.java.elegant.access.mlkit.qrcode.scanner.example.ui.main</summary>
+<details open><summary>app.src.main.java.elegant.access.mlkit.qrcode.scanner.example.ui.barcode</summary>
 
-| File                                                                                                                                                                                 | Summary                         |
-| ---                                                                                                                                                                                  | ---                             |
-| [MainViewModel.kt](https://github.com/KuanChunChen/MLKit_qr_code_scanner_example/blob/master/app/src/main/java/elegant/access/mlkit/qrcode/scanner/example/ui/main/MainViewModel.kt) | <code>►Viewmodel for main page.</code> |
+| File                                                                                                                                                                                                                      | Summary                         |
+| ---                                                                                                                                                                                                                       | ---                             |
+| [BaseBarCodeActivity.kt](https://github.com/KuanChunChen/MLKit_qr_code_scanner_example.git/blob/master/app/src/main/java/elegant/access/mlkit/qrcode/scanner/example/ui/barcode/BaseBarCodeActivity.kt)                   | <code>► Base bar code activity that developer can extension it.</code> |
+| [ElegantAccessCodeViewModel.kt](https://github.com/KuanChunChen/MLKit_qr_code_scanner_example.git/blob/master/app/src/main/java/elegant/access/mlkit/qrcode/scanner/example/ui/barcode/ElegantAccessCodeViewModel.kt)     | <code>► The viewmodel that implement the main qrcode logic.</code> |
+| [ElegantAccessBarCodeActivity.kt](https://github.com/KuanChunChen/MLKit_qr_code_scanner_example.git/blob/master/app/src/main/java/elegant/access/mlkit/qrcode/scanner/example/ui/barcode/ElegantAccessBarCodeActivity.kt) | <code>► The activity that implement the main qrcode logic.</code> |
 
 </details>
 
 <details open><summary>app.src.main.java.elegant.access.mlkit.qrcode.scanner.example.di</summary>
 
-| File                                                                                                                                                                      | Summary                         |
-| ---                                                                                                                                                                       | ---                             |
-| [AppModule.kt](https://github.com/KuanChunChen/MLKit_qr_code_scanner_example/blob/master/app/src/main/java/elegant/access/mlkit/qrcode/scanner/example/di/AppModule.kt)   | <code>► Some di staff for init class.</code> |
-| [UtilsModel.kt](https://github.com/KuanChunChen/MLKit_qr_code_scanner_example/blob/master/app/src/main/java/elegant/access/mlkit/qrcode/scanner/example/di/UtilsModel.kt) | <code>► Some di staff for init class.</code> |
+| File                                                                                                                                                                        | Summary                         |
+| ---                                                                                                                                                                         | ---                             |
+| [AppModule.kt](https://github.com/KuanChunChen/MLKit_qr_code_scanner_example.git/blob/master/app/src/main/java/elegant/access/mlkit/qrcode/scanner/example/di/AppModule.kt) | <code>► Koin DI module to inject viewmodel.</code> |
+
+</details>
+
+<details open><summary>app.src.main.java.elegant.access.mlkit.qrcode.scanner.example.constants</summary>
+
+| File                                                                                                                                                                                           | Summary                         |
+| ---                                                                                                                                                                                            | ---                             |
+| [BarCodeConstant.kt](https://github.com/KuanChunChen/MLKit_qr_code_scanner_example.git/blob/master/app/src/main/java/elegant/access/mlkit/qrcode/scanner/example/constants/BarCodeConstant.kt) | <code>► base constant defined in here.</code> |
 
 </details>
 
 <details open><summary>app.src.main.java.elegant.access.mlkit.qrcode.scanner.example.base.utils</summary>
 
-| File                                                                                                                                                                            | Summary                         |
-| ---                                                                                                                                                                             | ---                             |
-| [Extension.kt](https://github.com/KuanChunChen/MLKit_qr_code_scanner_example/blob/master/app/src/main/java/elegant/access/mlkit/qrcode/scanner/example/base/utils/Extension.kt) | <code>► Kotlin extension.</code> |
+| File                                                                                                                                                                                                                    | Summary                         |
+| ---                                                                                                                                                                                                                     | ---                             |
+| [ActivityViewBindingDelegate.kt](https://github.com/KuanChunChen/MLKit_qr_code_scanner_example.git/blob/master/app/src/main/java/elegant/access/mlkit/qrcode/scanner/example/base/utils/ActivityViewBindingDelegate.kt) | <code>► To implement viewbinding.</code> |
+| [ScanCodeParser.kt](https://github.com/KuanChunChen/MLKit_qr_code_scanner_example.git/blob/master/app/src/main/java/elegant/access/mlkit/qrcode/scanner/example/base/utils/ScanCodeParser.kt)                           | <code>► Scan code parser.</code> |
+| [PermissionUtil.kt](https://github.com/KuanChunChen/MLKit_qr_code_scanner_example.git/blob/master/app/src/main/java/elegant/access/mlkit/qrcode/scanner/example/base/utils/PermissionUtil.kt)                           | <code>► Permission util implement by extension.</code> |
 
 </details>
 
 <details open><summary>app.src.main.java.elegant.access.mlkit.qrcode.scanner.example.base.mlkit</summary>
 
-| File                                                                                                                                                                                            | Summary                         |
-| ---                                                                                                                                                                                             | ---                             |
-| [ScannerManager.kt](https://github.com/KuanChunChen/MLKit_qr_code_scanner_example/blob/master/app/src/main/java/elegant/access/mlkit/qrcode/scanner/example/base/mlkit/ScannerManager.kt)       | <code>► The class that can control the whole scanner.</code> |
-| [ScannerAnalyzer.kt](https://github.com/KuanChunChen/MLKit_qr_code_scanner_example/blob/master/app/src/main/java/elegant/access/mlkit/qrcode/scanner/example/base/mlkit/ScannerAnalyzer.kt)     | <code>► To parse the scanner result.</code> |
-| [BaseCameraManager.kt](https://github.com/KuanChunChen/MLKit_qr_code_scanner_example/blob/master/app/src/main/java/elegant/access/mlkit/qrcode/scanner/example/base/mlkit/BaseCameraManager.kt) | <code>► The base thing that common need to init.</code> |
+| File                                                                                                                                                                                                                    | Summary                         |
+| ---                                                                                                                                                                                                                     | ---                             |
+| [BaseCameraLifecycleObserver.kt](https://github.com/KuanChunChen/MLKit_qr_code_scanner_example.git/blob/master/app/src/main/java/elegant/access/mlkit/qrcode/scanner/example/base/mlkit/BaseCameraLifecycleObserver.kt) | <code>►Base camera lifecycler observer to handle careraX.</code> |
+| [ScannerAnalyzer.kt](https://github.com/KuanChunChen/MLKit_qr_code_scanner_example.git/blob/master/app/src/main/java/elegant/access/mlkit/qrcode/scanner/example/base/mlkit/ScannerAnalyzer.kt)                         | <code>► The scanner analyzer to handle careraX.</code> |
+| [ScannerLifecycleObserver.kt](https://github.com/KuanChunChen/MLKit_qr_code_scanner_example.git/blob/master/app/src/main/java/elegant/access/mlkit/qrcode/scanner/example/base/mlkit/ScannerLifecycleObserver.kt)       | <code>► Implement camera lifecycler observer to handle careraX.</code> |
 
 </details>
 
